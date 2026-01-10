@@ -1,0 +1,53 @@
+food-recommendation-app/
+├─ app/                      # (If using Expo Router) Screens + navigation routes
+│  ├─ (tabs)/
+│  │  ├─ home.tsx
+│  │  ├─ search.tsx
+│  │  ├─ saved.tsx
+│  │  └─ profile.tsx
+│  ├─ food/
+│  │  └─ [id].tsx            # Food detail screen (dynamic route)
+│  └─ _layout.tsx            # App layout / navigation wrapper
+│
+├─ src/
+│  ├─ components/            # Reusable UI building blocks
+│  │  ├─ ui/                 # Very generic UI: Button, Input, Card, Chip...
+│  │  ├─ food/               # Food-specific components: FoodCard, FoodList...
+│  │  └─ layout/             # Header, ScreenContainer, SectionTitle...
+│  │
+│  ├─ screens/               # (If NOT using Expo Router) full screens here
+│  │  ├─ HomeScreen.tsx
+│  │  ├─ SearchScreen.tsx
+│  │  ├─ FoodDetailScreen.tsx
+│  │  └─ SavedScreen.tsx
+│  │
+│  ├─ services/              # “Backend calls” from the app (API layer)
+│  │  ├─ apiClient.ts        # fetch/axios setup, baseURL, interceptors
+│  │  ├─ foodService.ts      # functions: getFoods(), getFoodById(), recommend()
+│  │  └─ authService.ts      # login/register (optional)
+│  │
+│  ├─ store/                 # App state management (choose one approach)
+│  │  ├─ useSavedStore.ts    # Zustand example OR Redux slices
+│  │  └─ useUserStore.ts
+│  │
+│  ├─ hooks/                 # Custom hooks
+│  │  ├─ useDebounce.ts
+│  │  └─ useFetch.ts
+│  │
+│  ├─ utils/                 # Helpers (formatting, validators)
+│  │  ├─ format.ts
+│  │  └─ validators.ts
+│  │
+│  ├─ constants/             # App constants (colors, spacing, categories)
+│  │  ├─ theme.ts
+│  │  └─ categories.ts
+│  │
+│  ├─ types/                 # TypeScript types
+│  │  └─ food.ts
+│  │
+│  └─ assets/                # (Optional) images/fonts if you keep them in src
+│
+├─ assets/                   # Expo assets folder (images, fonts)
+├─ .env                      # API keys, base URL (don’t push)
+├─ app.json / app.config.ts
+└─ package.json
