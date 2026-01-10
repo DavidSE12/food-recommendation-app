@@ -1,11 +1,11 @@
 import React , {useState, useEffect} from 'react';
 import {View, Text, TextInput} from 'react-native';
-
+import HomeScreen from './home';
 
 const Home = () => {
     return (
         <View>
-            <Text style = {{color : "black"}}>Hello World</Text>
+            <HomeScreen />
         </View>
     )
 }
