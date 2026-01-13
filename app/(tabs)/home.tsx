@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchBar from '@/src/components/Search';
@@ -11,10 +11,62 @@ import {
   StatusBar,
   TouchableOpacity,
 } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+
+
+type CategoriesType = {
+  id: string,
+  title: string,
+};
+
+
+const CategoriesData: CategoriesType[] = [
+  { id: '1' , title: 'All'},
+  { id: '2' , title: 'Popular'},
+  { id: '3' , title: 'Fast Food'},
+  { id: '4' , title: 'Healthy'},
+  { id: '5' , title: 'Discount'},
+];
+
+type CategoriesProp = {
+  item: CategoriesType;
+  onPress: () => void;
+  backgroundColor: string;
+  textColor: string;
+};
+
+const Categories = ({item, onPress, backgroundColor, textColor} : CategoriesProp) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item , {backgroundColor}]}>
+      <Text style={[styles.title , {color: textColor}]}>{item.title}</Text>
+  </TouchableOpacity>
+);
 
 
 
 const HomeScreen = () => {
+
+  const [selectedId, setSelectedId] = useState<string>();
+
+  const renderItem = ({item} : {item: CategoriesType}) => {
+    // Background color
+    const backgroundColor = item.id === selectedId ? '#FF6A00' : '#c8c8c8ff';
+    
+    // Text Color
+    const color = item.id === selectedId ? 'white' : 'black';
+
+    return (
+      <Categories 
+        item = {item}
+        onPress= { () => setSelectedId(item.id)}
+        backgroundColor = {backgroundColor}
+        textColor = {color}
+      />
+    );
+
+  };
+
+
+
   return (
     <LinearGradient
       colors={['#FFFFFF', '#FFFFFF', '#FFE9C7']}
@@ -54,8 +106,19 @@ const HomeScreen = () => {
         
         {/* Categories Section */}
         <View style = {styles.centerContent}>
-            <Text style = {styles.mainSection} >Categories</Text>
-            <Text> See All</Text>
+          
+            <View style = {styles.rowContainer}>
+              <Text style = {styles.mainSection} >Categories</Text>
+              <Text> See All</Text>
+            </View>
+          {/* Show Categories data */}
+          <FlatList
+            data = {CategoriesData}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            extraData={selectedId}
+            horizontal
+          />
         </View>
 
        </View>
@@ -78,10 +141,17 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 16,
   },
+
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 20,
+  },
+
   rowContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    
+    justifyContent: "space-between"
   },
   profileIcon: {
     width: 40,
@@ -97,6 +167,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
   },
+
+  title: {
+    fontSize: 32,
+  },
+
+  
+
+
 
 });
 
