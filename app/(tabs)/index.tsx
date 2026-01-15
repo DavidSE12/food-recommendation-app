@@ -4,8 +4,13 @@ import HomeScreen from './home';
 
 const Home = () => {
     return (
+//         <View style = {{flex : 1}}>
+//             <HomeScreen />
+//
+//         </View>
+
         <View>
-            <HomeScreen />
+        <Text>Check</Text>
         </View>
     )
 }
