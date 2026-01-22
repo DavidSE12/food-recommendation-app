@@ -2,17 +2,17 @@ import React , {useState, useEffect} from 'react';
 import {View, Text, TextInput} from 'react-native';
 import HomeScreen from './home';
 
-const Home = () => {
+const app = () => {
     return (
-//         <View style = {{flex : 1}}>
-//             <HomeScreen />
-//
-//         </View>
+        <View style = {{flex : 1}}>
+            <HomeScreen />
 
-        <View>
-        <Text>Check</Text>
         </View>
+
+//         <View>
+//         <Text>Check</Text>
+//         </View>
     )
 }
 
-export default Home;
+export default app;

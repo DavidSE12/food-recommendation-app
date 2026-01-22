@@ -1,12 +1,15 @@
-import React from 'react';
-import { View, StatusBar, StyleSheet, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react';
+import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import HomeHeader from '@/src/components/home/HomeHeader';
 import CategoriesSection from '@/src/components/home/CategoriesSection';
+import HomeHeader from '@/src/components/home/HomeHeader';
 import MapSection from '@/src/components/home/MapSection';
 import PopularSection from '@/src/components/home/PopularSection';
+
+
+
 
 export default function HomeScreen() {
   return (
@@ -39,9 +42,8 @@ export default function HomeScreen() {
           }
           
         />
-       
-
       </SafeAreaView>
+ 
     </LinearGradient>
   );
 }
