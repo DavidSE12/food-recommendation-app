@@ -4,8 +4,10 @@ import HomeScreen from './home';
 
 const favorite = () => {
     return (
-        <Text>This is favorite screen</Text>
-    )
+
+      <Text> Heellooo </Text>
+
+    );
 }
 
 export default favorite;

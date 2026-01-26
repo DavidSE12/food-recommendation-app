@@ -1,7 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Map from '@/src/components/map';
+
 
 export default function MapSection() {
+
+//    const initialRegion = {
+//        latitude: 40.78825, // Initial latitude
+//        longitude: -122.4324, // Initial longitude
+//        latitudeDelta: 0.0922,
+//        longitudeDelta: 0.0421,
+//       };
+
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -9,7 +19,8 @@ export default function MapSection() {
       </View>
 
       <View style={styles.mapSection}>
-        <Text>Show Map In here</Text>
+            {/* <Map /> */}
+            <Text>Show map here</Text>
       </View>
     </View>
   );
