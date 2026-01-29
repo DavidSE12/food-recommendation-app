@@ -1,4 +1,4 @@
-package com.example.foodrecomd;
+package com.example.foodrecomd.service;
 
 import com.example.foodrecomd.dto.RestaurantDTO;
 import com.google.maps.GeoApiContext;
@@ -56,9 +56,8 @@ public class GooglePlacesService {
             dto.setLat(result.geometry.location.lat);
             dto.setLng(result.geometry.location.lng);
             
-            if (result.priceLevel != null) {
-                dto.setPriceLevel(getPriceLevelString(result.priceLevel));
-}
+            // Set default price level since it's not available in nearby search
+            dto.setPriceLevel("Not Available");
             
             if (result.openingHours != null) {
                 dto.setOpenNow(result.openingHours.openNow);
@@ -75,16 +74,5 @@ public class GooglePlacesService {
         }
         
         return restaurants;
-    }
-    
-    private String getPriceLevelString(PriceLevel priceLevel) {
-        switch (priceLevel) {
-            case FREE: return "Free";
-            case INEXPENSIVE: return "$";
-            case MODERATE: return "$$";
-            case EXPENSIVE: return "$$$";
-            case VERY_EXPENSIVE: return "$$$$";
-            default: return "Unknown";
-        }
     }
 }
