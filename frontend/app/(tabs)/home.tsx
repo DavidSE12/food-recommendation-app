@@ -42,6 +42,8 @@ export default function HomeScreen() {
           }
           
         />
+
+        
       </SafeAreaView>
  
     </LinearGradient>

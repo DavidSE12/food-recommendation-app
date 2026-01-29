@@ -1,9 +1,11 @@
 // Map.tsx
 
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import MapView, { Marker, Region } from 'react-native-maps';
 import * as Location from 'expo-location';
+
+
 
 // type MapProps = {
 //   initialRegion: Region;
@@ -38,6 +40,10 @@ const Map = () => {
   })();
 }, []);
 
+
+
+
+
   return (
     <View style={styles.container}>
       <MapView
@@ -59,6 +65,7 @@ const Map = () => {
         />
         )}
       </MapView>
+      
     </View>
   );
 };
