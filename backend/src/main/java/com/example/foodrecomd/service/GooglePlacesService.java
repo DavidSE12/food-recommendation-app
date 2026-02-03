@@ -57,6 +57,9 @@ public class GooglePlacesService {
                 return Double.compare(score2, score1);
             });
 
+            // PlacesSearchResult[] price = response.results;
+            // String check = price.priceLevel;
+
             return convertToRestaurantDTOs(response.results);
 
         }
@@ -83,7 +86,7 @@ public class GooglePlacesService {
         );
 
         // Price Score
-        // double priceScore = getPriceScore(result.priceLevel);
+        // double priceScore = getPriceScore(result.priceLeve);
 
         // Bonus opening score
         double openNowBonus = 0;
@@ -139,7 +142,7 @@ public class GooglePlacesService {
             dto.setLng(result.geometry.location.lng);
             
             // Set default price level since it's not available in nearby search
-            dto.setPriceLevel("Not Available");
+            // dto.setPriceLevel(result.pri);
             
             if (result.openingHours != null) {
                 dto.setOpenNow(result.openingHours.openNow);

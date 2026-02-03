@@ -2,7 +2,7 @@ import React , {useState, useEffect} from 'react';
 import {View, Text, TextInput} from 'react-native';
 import HomeScreen from './home';
 
-const favorite = () => {
+const wishlist = () => {
     return (
 
       <Text> Heellooo </Text>
@@ -10,4 +10,4 @@ const favorite = () => {
     );
 }
 
-export default favorite;
+export default wishlist;
