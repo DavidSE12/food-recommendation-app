@@ -19,8 +19,7 @@ export default function MapSection() {
       </View>
 
       <View style={styles.mapSection}>
-            {/* <Map /> */}
-            <Text>Show map here</Text>
+            <Map />
       </View>
     </View>
   );
