@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {Text} from 'react-native';
 import Map from '@/src/components/map';
 import RestaurantBottomSheet from '@/src/components/explore/RestaurantBottomSheet';
-import Restaurant from '@/src/components/explore/RestaurantCard';
+import type {RestaurantProps} from '@/src/components/explore/RestaurantCard';
 import { useState, useEffect } from 'react';
 
 export type Restaurant = {
@@ -24,7 +24,7 @@ export type LatLng = {
 };
 
 
-const explore = () => {
+export default function Explore() {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [userLocation, setUserLocation] = useState<LatLng | null>(null);
 
@@ -59,4 +59,3 @@ const explore = () => {
     )
 }
 
-export default explore;

@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CategoriesSection from '@/src/components/home/CategoriesSection';
 import HomeHeader from '@/src/components/home/HomeHeader';
-import MapSection from '@/src/components/home/MapSection';
+
 import PopularSection from '@/src/components/home/PopularSection';
 
 export default function HomeScreen() {
@@ -23,7 +23,7 @@ export default function HomeScreen() {
           <>
             <HomeHeader />
             <CategoriesSection />
-            <MapSection />
+
             <PopularSection />
             <View style={{ height: 600 }} />
           </>

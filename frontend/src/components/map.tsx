@@ -7,7 +7,7 @@ import * as Location from "expo-location";
 import type { LatLng, Restaurant } from "@/app/(tabs)/explore";
 
 type Props = {
-  setUserLocation: (loc: LatLng) => void;
+  setUserLocation: (loc: { latitude: number; longitude: number }) => void;
   restaurants?: Restaurant[];
 };
 

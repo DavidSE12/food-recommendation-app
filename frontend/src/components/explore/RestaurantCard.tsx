@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 // Import or define Restaurant type
-export type Restaurant = {
+export type RestaurantProps = {
   id: string;
   name: string;
   rating?: number;
