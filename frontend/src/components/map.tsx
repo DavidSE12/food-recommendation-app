@@ -1,15 +1,8 @@
-
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import Restaurant from "@src/components/explore/RestaurantCard";
 
-type Restaurant = {
-  id: string;
-  name: string;
-  latitude: number;
-  longitude: number;
-  rating?: number;
-};
 
 type Props = {
   userLocation: {
@@ -27,7 +20,7 @@ type Props = {
 export default function Map({
   userLocation,
   setUserLocation,
-  restaurants
+  restaurants,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -48,18 +41,10 @@ export default function Map({
         zoomEnabled
         showsMyLocationButton
         zoomControlEnabled
+        followsUserLocation
+        scrollEnabled
       >
         {/* 🔥 Render restaurant markers */}
-        {restaurants.map((restaurant) => (
-          <Marker
-            key={restaurant.id}
-            coordinate={{
-              latitude: restaurant.latitude,
-              longitude: restaurant.longitude,
-            }}
-            title={restaurant.name}
-          />
-        ))}
       </MapView>
     </View>
   );
@@ -67,7 +52,9 @@ export default function Map({
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,)
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   map: {
     ...StyleSheet.absoluteFillObject,
