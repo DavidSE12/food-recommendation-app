@@ -1,85 +1,61 @@
-🍽️ Food Recommendation App
+# 🍽️ Food Recommendation App
 
 A location-based mobile application that recommends nearby restaurants using intelligent scoring algorithms and real-time map interaction.
 
 Built with React Native (Expo) and Java Spring Boot backend, integrated with Google Maps & Places API.
 
-📱 Overview
+## 📱 Overview
 
 This application helps users discover the best nearby restaurants based on:
 
-📍 User’s current location
-
-⭐ Rating
-
-👥 Popularity (number of reviews)
-
-💰 Price level
-
-📏 Distance
-
-🟢 Open-now status
+- 📍 User’s current location
+- ⭐ Rating
+- 👥 Popularity (number of reviews)
+- 💰 Price level
+- 📏 Distance
+- 🟢 Open-now status
 
 Restaurants are displayed on an interactive map with dynamic markers and a bottom sheet UI for easy browsing.
 
-🚀 Features
+## 🚀 Features
 
-📍 Real-time GPS location detection
+- 📍 Real-time GPS location detection
+- 🗺️ Interactive Google Maps integration
+- 📌 Dynamic restaurant markers
+- 📊 Custom restaurant ranking algorithm
+- 📱 Bottom sheet restaurant preview cards
+- 🔄 Backend-powered data fetching
+- 🧠 Distance + rating + popularity scoring system
+- ⚡ Smooth map animation and UI transitions
 
-🗺️ Interactive Google Maps integration
+## 🏗️ Tech Stack
 
-📌 Dynamic restaurant markers
+### Frontend
+- React Native (Expo)
+- TypeScript
+- react-native-maps
+- @gorhom/bottom-sheet
+- Expo Location
 
-📊 Custom restaurant ranking algorithm
+### Backend
+- Java
+- Spring Boot
+- RESTful API architecture
+- Google Places API
+- Gradle
 
-📱 Bottom sheet restaurant preview cards
+## 🧠 Scoring Factors
 
-🔄 Backend-powered data fetching
+Restaurants are ranked based on:
 
-🧠 Distance + rating + popularity scoring system
+- ⭐ Higher ratings increase score
+- 👥 Popular places rank higher
+- 📏 Closer restaurants score better
+- 💰 Balanced pricing improves ranking
+- 🟢 Open restaurants receive bonus points
 
-⚡ Smooth map animation and UI transitions
+## 📂 Project Structure
 
-🏗️ Tech Stack
-Frontend
-
-React Native (Expo)
-
-TypeScript
-
-react-native-maps
-
-@gorhom/bottom-sheet
-
-Expo Location
-
-Backend
-
-Java
-
-Spring Boot
-
-RESTful API architecture
-
-Google Places API
-
-Gradle
-
-
-
-Factors considered:
-
-⭐ Higher ratings increase score
-
-👥 Popular places rank higher
-
-📏 Closer restaurants score better
-
-💰 Balanced pricing improves ranking
-
-🟢 Open restaurants get bonus points
-
-📂 Project Structure
 FoodRecomdApp/
 │
 ├── frontend/          # React Native Expo App
@@ -95,26 +71,40 @@ FoodRecomdApp/
 │
 └── README.md
 
-⚙️ Setup Instructions
-1️⃣ Clone Repository
+## ⚙️ Setup Instructions
+
+### 1️⃣ Clone Repository
 git clone https://github.com/YOUR_USERNAME/food-recommendation-app.git
 cd FoodRecomdApp
 
-2️⃣ Backend Setup
+### 2️⃣ Backend Setup
 cd backend
 ./gradlew bootRun
 
-
 Backend runs at:
-
 http://localhost:8080
 
-
 For Android Emulator:
-
 http://10.0.2.2:8080
 
-3️⃣ Frontend Setup
+### 3️⃣ Frontend Setup
 cd frontend
 npm install
 npx expo start
+
+Scan the QR code or launch an emulator to run the app.
+
+## 📌 Future Improvements
+
+- 🔎 Search by cuisine type
+- ❤️ Favorite restaurants feature
+- 🧾 Restaurant detail screen
+- 🔐 Authentication (JWT)
+- ☁️ Cloud deployment (AWS / Railway)
+- 🧭 Navigation routing integration
+
+## 👨‍💻 Author
+
+David Huynh  
+Bachelor of Information Technology (Software Engineering)  
+La Trobe University
