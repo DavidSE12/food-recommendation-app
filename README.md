@@ -74,13 +74,15 @@ FoodRecomdApp/
 ## ⚙️ Setup Instructions
 
 ### 1️⃣ Clone Repository
+```
 git clone https://github.com/YOUR_USERNAME/food-recommendation-app.git
 cd FoodRecomdApp
-
+```
 ### 2️⃣ Backend Setup
+```
 cd backend
 ./gradlew bootRun
-
+```
 Backend runs at:
 http://localhost:8080
 
@@ -88,10 +90,11 @@ For Android Emulator:
 http://10.0.2.2:8080
 
 ### 3️⃣ Frontend Setup
+```
 cd frontend
 npm install
 npx expo start
-
+```
 Scan the QR code or launch an emulator to run the app.
 
 ## 📌 Future Improvements
