@@ -55,22 +55,22 @@ Restaurants are ranked based on:
 - 🟢 Open restaurants receive bonus points
 
 ## 📂 Project Structure
-
+```
 FoodRecomdApp/
 │
-├── frontend/          # React Native Expo App
-│   ├── app/
-│   ├── src/components/
-│   └── ...
+├── frontend/ # React Native Expo App
+│ ├── app/
+│ ├── src/components/
+│ └── ...
 │
-├── backend/           # Spring Boot API
-│   ├── controller/
-│   ├── service/
-│   ├── dto/
-│   └── ...
+├── backend/ # Spring Boot API
+│ ├── controller/
+│ ├── service/
+│ ├── dto/
+│ └── ...
 │
 └── README.md
-
+```
 ## ⚙️ Setup Instructions
 
 ### 1️⃣ Clone Repository
