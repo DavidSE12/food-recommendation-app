@@ -5,16 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff4e8cd9-99c5-4487-bbe1-8cd79f12acc4" name="Changes" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/frontend/babel.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/(tabs)/explore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/(tabs)/explore.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/(tabs)/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/(tabs)/home.tsx" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/(tabs)/explore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/(tabs)/explore.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/babel.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/babel.config.js" afterDir="false" />
+>>>>>>> 4b00787 (Create bottom sheet to show restaurant card but still got error of getting data from backend)
       <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/explore/RestaurantBottomSheet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/explore/RestaurantBottomSheet.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/explore/RestaurantCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/explore/RestaurantCard.tsx" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/frontend/src/components/home/MapSection.tsx" beforeDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/home/MapSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/home/MapSection.tsx" afterDir="false" />
+>>>>>>> 4b00787 (Create bottom sheet to show restaurant card but still got error of getting data from backend)
       <change beforePath="$PROJECT_DIR$/frontend/src/components/map.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/map.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

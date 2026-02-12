@@ -12,7 +12,11 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
+<<<<<<< HEAD
     "@gorhom/bottom-sheet": "^4.6.4",
+=======
+    "@gorhom/bottom-sheet": "^5.2.8",
+>>>>>>> 4b00787 (Create bottom sheet to show restaurant card but still got error of getting data from backend)
     "@react-native-community/geolocation": "^3.4.0",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",
