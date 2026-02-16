@@ -17,4 +17,8 @@ public class GoogleMapsConfig {
             .apiKey(apiKey)
             .build();
     }
+
+    public String getApiKey() {
+        return apiKey;
+    }
 }

@@ -10,14 +10,15 @@ import {
 export type Restaurant = {
   id: string;
   name: string;
-  rating?: number;
   address?: string;
-  openNow?: boolean;
-  photoUrl?: string;
+  rating?: number;
+  totalRating: number;
+  priceLevel?: string;
   lat: number;
   lng: number;
-  distance?: number; // in meters
-  openingHours?: string; // e.g., "9:00 AM - 10:00 PM"
+  openNow?: boolean;
+  photoRef?: string;
+  photoUrl?: string;
 };
 
 type Props = {
@@ -52,9 +53,12 @@ export default function RestaurantCard({ item, onPress }: Props) {
       {/* Restaurant Image */}
       {item.photoUrl ? (
         <Image source={{ uri: item.photoUrl }} style={styles.image} />
-      ) : (
+      ) :
+      (
         <View style={styles.imagePlaceholder}>
           <Text style={styles.placeholderEmoji}>🍽️</Text>
+          <Text> {item.photoUrl} </Text>
+
         </View>
       )}
 
@@ -71,7 +75,8 @@ export default function RestaurantCard({ item, onPress }: Props) {
       <View style={styles.infoContainer}>
         {/* Name */}
         <Text style={styles.name} numberOfLines={1}>
-          {item.name}
+
+            {item.name}
         </Text>
 
         {/* Address with Distance */}

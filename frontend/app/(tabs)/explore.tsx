@@ -3,72 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Map from '@/src/components/map';
 import RestaurantBottomSheet from '@/src/components/explore/RestaurantBottomSheet';
-import { Restaurant, LatLng } from '@/src/types/restaurant';
+import type Restaurant from '@/src/components/explore/RestaurantCard';
 import * as Location from 'expo-location';
+import { useLocation } from "@/src/context/LocationContext"; // ✅ Import hook
+import { useRestaurants } from '@/src/context/RestaurantContext';
+
 export default function Explore() {
 
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [userLocation, setUserLocation] = useState<{
-      latitude: number;
-      longitude: number;
-     } | null>(null);
 
+  // ✅ Get location from context (already fetched once globally)
+  const { userLocation, setUserLocation, error, loading } = useLocation();
+  const {restaurants, setRestaurants} = useRestaurants();
 
-  useEffect(() => {
-  (async ()    => {
-    // Ask permission
-    const {status} = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      console.log('Permission to access location was denied');
-        return;
-    }
-
-    // Get user Location
-    const location = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
-     });
-
-     setUserLocation({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-     });
-  })();
-}, []);
-
-  useEffect(() => {
-    if (!userLocation) return;
-
-    const fetchRestaurants = async () => {
-      try {
-
-        console.log(userLocation.latitude, " and " , userLocation.longitude);
-
-        const res = await fetch('http://192.168.56.1:8080/api/nearby', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            lat: userLocation.latitude,
-            lng: userLocation.longitude,
-            radiusKm: 5,
-          }),
-        });
-
-        if (!res.ok) {
-          console.error('Failed to fetch restaurants:', res.status);
-          return;
-        }
-
-        const data = await res.json();
-        setRestaurants(data);
-      } catch (error) {
-        console.error('Error fetching restaurants:', error);
-      }
-    };
-
-    fetchRestaurants();
-  }, [userLocation]);
+    console.log(userLocation);
 
   const handleSelectRestaurant = (restaurant: Restaurant) => {
     console.log('Selected:', restaurant.name);
@@ -80,7 +27,6 @@ export default function Explore() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-
       <Map userLocation={userLocation} setUserLocation={setUserLocation} restaurants={restaurants} />
 
       <RestaurantBottomSheet

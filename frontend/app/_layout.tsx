@@ -1,3 +1,5 @@
+import { LocationProvider } from '@/src/context/LocationContext';
+import { RestaurantProvider } from '@/src/context/RestaurantContext';
 
 import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -6,10 +8,14 @@ export default function RootLayout() {
   return (
 
     <GestureHandlerRootView style={{ flex: 1 }}>
-        <Stack screenOptions={{ headerShown: false }}>
-            {/* This renders your tab group */}
-            <Stack.Screen name="(tabs)" />
-        </Stack>
+        <LocationProvider>
+            <RestaurantProvider>
+                <Stack screenOptions={{ headerShown: false }}>
+                    {/* This renders your tab group */}
+                    <Stack.Screen name="(tabs)" />
+                </Stack>
+            </RestaurantProvider>
+        </LocationProvider>
     </GestureHandlerRootView>
   );
 }

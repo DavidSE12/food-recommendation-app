@@ -13,6 +13,7 @@ public class RestaurantDTO {
     private double lng;
     private boolean openNow;
     private List<String> photoReferences;
+    private String photoUrl;
     
     // Getters and Setters
     public String getPlaceId() { return placeId; }
@@ -46,4 +47,7 @@ public class RestaurantDTO {
     public void setPhotoReferences(List<String> photoReferences) { 
         this.photoReferences = photoReferences; 
     }
+
+    public String getPhotoUrl() { return photoUrl; }
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl;}
 }

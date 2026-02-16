@@ -1,1 +1,17 @@
-services: {}
+services:
+            db:
+                 image: postgres:16
+                 container_name: foodapp-postgre
+                 restart: unless-stopped
+                 environment:
+                   POSTGRES_DB: foodapp
+                   POSTGRES_USER: foodapp_user
+                   POSTGRES_PASSWORD: foodapp_pass
+                 ports:
+                   - "5432:5432"
+                 volumes:
+                   - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+

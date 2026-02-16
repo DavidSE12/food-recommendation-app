@@ -3,6 +3,9 @@ package com.example.foodrecomd.service;
 // Restaurant DTO
 import com.example.foodrecomd.dto.RestaurantDTO;
 
+import com.example.foodrecomd.config.GoogleMapsConfig;
+
+
 // Main Package of Google Map Service, Manage connection and authentication with Google Map APIs (CORE)
 import com.google.maps.GeoApiContext;
 
@@ -18,13 +21,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+
+
 @Service
 public class GooglePlacesService {
     
     private final GeoApiContext context;
-    
-    public GooglePlacesService(GeoApiContext context) {
+    private final GoogleMapsConfig googleMapsConfig;
+
+    public GooglePlacesService(GeoApiContext context, GoogleMapsConfig googleMapsConfig) {
         this.context = context;
+        this.googleMapsConfig = googleMapsConfig;
     }
     
     // public List<RestaurantDTO> findNearbyRestaurants(double lat, double lng, int radiusMeters) {
@@ -150,14 +157,143 @@ public class GooglePlacesService {
             
             if (result.photos != null && result.photos.length > 0) {
                 List<String> photoRefs = Arrays.stream(result.photos)
-                    .map(photo -> photo.photoReference)
-                    .collect(Collectors.toList());
+                        .map(photo -> photo.photoReference)
+                        .collect(Collectors.toList());
                 dto.setPhotoReferences(photoRefs);
+
+                String photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" +
+                        photoRefs.get(0) + "&key=" + googleMapsConfig.getApiKey();
+                dto.setPhotoUrl(photoUrl);
             }
-            
             restaurants.add(dto);
         }
-        
+
+
+    }
+
+    /**
+     * Get detailed information about a restaurant by Place ID
+     * Uses NEW Place Details API with field selection for cost optimization
+     */
+    public RestaurantDetails getRestaurantDetails(String placeId) {
+        try {
+            // Define which fields to fetch (cost-optimized selection)
+            // Be strategic: only request fields you actually need!
+
+            PlaceDetailsRequest request = PlacesApi.placeDetails(context, placeId);
+
+            // Specify exactly which fields we need
+            // This is CRITICAL for cost control!
+            request.fields(
+                    // ESSENTIALS (cheaper tier)
+                    PlaceDetailsRequest.FieldMask.FORMATTED_ADDRESS,
+
+                    // PRO (medium cost)
+                    PlaceDetailsRequest.FieldMask.NAME,
+                    PlaceDetailsRequest.FieldMask.BUSINESS_STATUS,
+
+                    // ENTERPRISE (higher cost) - only if you need them
+                    PlaceDetailsRequest.FieldMask.FORMATTED_PHONE_NUMBER,
+                    PlaceDetailsRequest.FieldMask.OPENING_HOURS,
+                    PlaceDetailsRequest.FieldMask.RATING,
+                    PlaceDetailsRequest.FieldMask.USER_RATINGS_TOTAL,
+                    PlaceDetailsRequest.FieldMask.WEBSITE,
+                    PlaceDetailsRequest.FieldMask.PRICE_LEVEL,
+
+                    // ENTERPRISE PLUS (most expensive) - only if you need them
+                    PlaceDetailsRequest.FieldMask.REVIEWS,
+                    PlaceDetailsRequest.FieldMask.PHOTOS
+            );
+
+            PlaceDetails placeDetails = request.await();
+
+            // Convert to our DTO
+            RestaurantDetails details = new RestaurantDetails();
+            details.setPlaceId(placeId);
+
+            // NAME (Pro SKU)
+            details.setName(placeDetails.name);
+
+            // RATING & USER_RATINGS_TOTAL (Enterprise SKU)
+            details.setRating(placeDetails.rating != 0 ? (double) placeDetails.rating : null);
+            details.setTotalRatings(placeDetails.userRatingsTotal);
+
+            // FORMATTED_ADDRESS (Essentials SKU)
+            details.setAddress(placeDetails.formattedAddress);
+
+            // FORMATTED_PHONE_NUMBER (Enterprise SKU)
+            details.setPhone(placeDetails.formattedPhoneNumber);
+
+            // WEBSITE (Enterprise SKU)
+            details.setWebsite(placeDetails.website != null ? placeDetails.website.toString() : null);
+
+            // PRICE_LEVEL (Enterprise SKU)
+            if (placeDetails.priceLevel != null) {
+                int level = placeDetails.priceLevel.ordinal() + 1;
+                details.setPriceLevel("$".repeat(level));
+            }
+
+
+            // OPENING_HOURS (Enterprise SKU)
+            if (placeDetails.openingHours != null) {
+                details.setOpenNow(placeDetails.openingHours.openNow);
+                if (placeDetails.openingHours.weekdayText != null) {
+                    details.setOpeningHours(Arrays.asList(placeDetails.openingHours.weekdayText));
+                } else {
+                    details.setOpeningHours(new ArrayList<>());
+                }
+            } else {
+                details.setOpeningHours(new ArrayList<>());
+            }
+
+            // PHOTOS (Enterprise Plus SKU)
+            if (placeDetails.photos != null && placeDetails.photos.length > 0) {
+                List<String> photoUrls = Arrays.stream(placeDetails.photos)
+                        .limit(12) // Max 10 photos
+                        .map(photo -> buildPhotoUrl(photo.photoReference))
+                        .collect(Collectors.toList());
+                details.setPhotos(photoUrls);
+            } else {
+                details.setPhotos(new ArrayList<>());
+            }
+
+            // REVIEWS (Enterprise Plus SKU)
+            if (placeDetails.reviews != null && placeDetails.reviews.length > 0) {
+                List<Review> reviewList = Arrays.stream(placeDetails.reviews)
+                        .limit(5) // Max 5 reviews
+                        .map(review -> {
+                            Review r = new Review();
+                            r.setAuthorName(review.authorName);
+                            r.setRating(review.rating);
+                            r.setText(review.text);
+                            r.setTime(review.time);
+                            r.setRelativeTime(review.relativeTimeDescription);
+                            r.setProfilePhoto(review.authorUrl != null ? review.authorUrl.toString() : null);
+                            return r;
+                        })
+                        .collect(Collectors.toList());
+                details.setReviews(reviewList);
+            } else {
+                details.setReviews(new ArrayList<>());
+            }
+
+            return details;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch place details: " + e.getMessage(), e);
+        }
+    }
+    /**
+     * Build Google Places Photo API URL
+     */
+    private String buildPhotoUrl(String photoReference) {
+        return String.format(
+                "https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=%s&key=%s",
+                photoReference,
+                googleMapsConfig.getApiKey()
+        );
+    }
+
         return restaurants;
     }
 }

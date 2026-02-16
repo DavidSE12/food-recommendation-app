@@ -29,6 +29,7 @@ export default function RestaurantBottomSheet({
       enablePanDownToClose={false} // Keep it always visible
       handleIndicatorStyle={styles.handleIndicator}
       backgroundStyle={styles.background}
+      enableDynamicSizing={false}
     >
       {/* Header */}
       <View style={styles.header}>

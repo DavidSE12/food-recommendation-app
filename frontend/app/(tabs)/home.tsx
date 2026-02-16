@@ -6,8 +6,12 @@ import CategoriesSection from '@/src/components/home/CategoriesSection';
 import HomeHeader from '@/src/components/home/HomeHeader';
 import RestaurantCard from '@/src/components/explore/RestaurantCard';
 import PopularSection from '@/src/components/home/PopularSection';
+import { useRestaurants } from '@/src/context/RestaurantContext';
+
 
 export default function HomeScreen() {
+
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
