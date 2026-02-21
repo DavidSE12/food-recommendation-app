@@ -1,25 +1,18 @@
-package com.example.foodrecomd.model;
+package com.example.foodrecomd.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.util.List;
+import com.example.foodrecomd.dto.Review;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
+
 public class RestaurantDetails {
     private String placeId;
     private String name;
-    private Double rating;
-    private Integer totalRatings;
     private String address;
-    private String phone;
     private String website;
     private String priceLevel;
 
     private List<String> openingHours;
-    private Boolean openNow;
     private List<String> photos;
     private List<Review> reviews;
 
@@ -39,36 +32,12 @@ public class RestaurantDetails {
         this.name = name;
     }
 
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
-    public Integer getTotalRatings() {
-        return totalRatings;
-    }
-
-    public void setTotalRatings(Integer totalRatings) {
-        this.totalRatings = totalRatings;
-    }
-
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getWebsite() {
@@ -86,8 +55,6 @@ public class RestaurantDetails {
     public void setPriceLevel(String priceLevel) {
         this.priceLevel = priceLevel;
     }
-
-
 
     public List<String> getOpeningHours() {
         return openingHours;
@@ -113,16 +80,7 @@ public class RestaurantDetails {
         this.reviews = reviews;
     }
 
-    public Boolean getOpenNow() {
-        return openNow;
-    }
-
-    public void setOpenNow(Boolean openNow) {
-        this.openNow = openNow;
-    }
 
 }
 
 
-
-}

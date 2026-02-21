@@ -2,6 +2,10 @@ package com.example.foodrecomd.controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import com.example.foodrecomd.dto.RestaurantDetails;
+
 import com.example.foodrecomd.dto.NearbyRequest;
 import com.example.foodrecomd.dto.RestaurantDTO;
 import com.example.foodrecomd.service.GooglePlacesService;
@@ -38,31 +42,21 @@ public class RestaurantController {
      */
     @GetMapping("/restaurant/{placeId}")
     public ResponseEntity<?> getRestaurantDetails(
-            @PathVariable String placeId,
-            @RequestParam(defaultValue = "full") String detail) {
+            @PathVariable String placeId){
         try {
             // Validate place ID
             if (placeId == null || placeId.trim().isEmpty()) {
                 return ResponseEntity.badRequest()
-                        .body(new ErrorResponse("Place ID is required"));
+                        .body("Place ID is required");
             }
 
-            RestaurantDetails details;
-
-            // Choose detail level based on query param
-            if ("basic".equalsIgnoreCase(detail)) {
-                // Budget-friendly: only essential fields
-                details = googlePlacesService.getRestaurantDetailsBasic(placeId);
-            } else {
-                // Full details: all fields including photos and reviews
-                details = googlePlacesService.getRestaurantDetails(placeId);
-            }
+            RestaurantDetails details = googlePlacesService.getRestaurantDetails(placeId);
 
             return ResponseEntity.ok(details);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponse("Failed to fetch restaurant details: " + e.getMessage()));
+                    .body("Failed to fetch restaurant details: " + e.getMessage());
         }
     }
 

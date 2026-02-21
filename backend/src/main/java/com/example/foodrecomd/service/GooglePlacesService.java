@@ -2,6 +2,8 @@ package com.example.foodrecomd.service;
 
 // Restaurant DTO
 import com.example.foodrecomd.dto.RestaurantDTO;
+import com.example.foodrecomd.dto.RestaurantDetails;
+import com.example.foodrecomd.dto.Review;
 
 import com.example.foodrecomd.config.GoogleMapsConfig;
 
@@ -13,6 +15,8 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.PlacesApi;
 import com.google.maps.model.*;
 import org.springframework.stereotype.Service;
+import com.google.maps.PlaceDetailsRequest;
+
 
 
 import java.util.ArrayList;
@@ -127,14 +131,14 @@ public class GooglePlacesService {
     }
 
     
-    public PlaceDetails getPlaceDetails(String placeId) {
-        try {
-            return PlacesApi.placeDetails(context, placeId).await();
-        } catch (Exception e) {
-            throw new RuntimeException("Error fetching place details: " + e.getMessage(), e);
-        }
-    }
-    
+//    public PlaceDetails getPlaceDetails(String placeId) {
+//        try {
+//            return PlacesApi.placeDetails(context, placeId).await();
+//        } catch (Exception e) {
+//            throw new RuntimeException("Error fetching place details: " + e.getMessage(), e);
+//        }
+//    }
+//
     private List<RestaurantDTO> convertToRestaurantDTOs(PlacesSearchResult[] results) {
         List<RestaurantDTO> restaurants = new ArrayList<>();
         
@@ -168,7 +172,7 @@ public class GooglePlacesService {
             restaurants.add(dto);
         }
 
-
+        return restaurants;
     }
 
     /**
@@ -190,13 +194,9 @@ public class GooglePlacesService {
 
                     // PRO (medium cost)
                     PlaceDetailsRequest.FieldMask.NAME,
-                    PlaceDetailsRequest.FieldMask.BUSINESS_STATUS,
 
                     // ENTERPRISE (higher cost) - only if you need them
-                    PlaceDetailsRequest.FieldMask.FORMATTED_PHONE_NUMBER,
                     PlaceDetailsRequest.FieldMask.OPENING_HOURS,
-                    PlaceDetailsRequest.FieldMask.RATING,
-                    PlaceDetailsRequest.FieldMask.USER_RATINGS_TOTAL,
                     PlaceDetailsRequest.FieldMask.WEBSITE,
                     PlaceDetailsRequest.FieldMask.PRICE_LEVEL,
 
@@ -214,15 +214,8 @@ public class GooglePlacesService {
             // NAME (Pro SKU)
             details.setName(placeDetails.name);
 
-            // RATING & USER_RATINGS_TOTAL (Enterprise SKU)
-            details.setRating(placeDetails.rating != 0 ? (double) placeDetails.rating : null);
-            details.setTotalRatings(placeDetails.userRatingsTotal);
-
             // FORMATTED_ADDRESS (Essentials SKU)
             details.setAddress(placeDetails.formattedAddress);
-
-            // FORMATTED_PHONE_NUMBER (Enterprise SKU)
-            details.setPhone(placeDetails.formattedPhoneNumber);
 
             // WEBSITE (Enterprise SKU)
             details.setWebsite(placeDetails.website != null ? placeDetails.website.toString() : null);
@@ -236,7 +229,6 @@ public class GooglePlacesService {
 
             // OPENING_HOURS (Enterprise SKU)
             if (placeDetails.openingHours != null) {
-                details.setOpenNow(placeDetails.openingHours.openNow);
                 if (placeDetails.openingHours.weekdayText != null) {
                     details.setOpeningHours(Arrays.asList(placeDetails.openingHours.weekdayText));
                 } else {
@@ -260,15 +252,13 @@ public class GooglePlacesService {
             // REVIEWS (Enterprise Plus SKU)
             if (placeDetails.reviews != null && placeDetails.reviews.length > 0) {
                 List<Review> reviewList = Arrays.stream(placeDetails.reviews)
-                        .limit(5) // Max 5 reviews
+                        .limit(8) // Max 5 reviews
                         .map(review -> {
                             Review r = new Review();
                             r.setAuthorName(review.authorName);
                             r.setRating(review.rating);
                             r.setText(review.text);
                             r.setTime(review.time);
-                            r.setRelativeTime(review.relativeTimeDescription);
-                            r.setProfilePhoto(review.authorUrl != null ? review.authorUrl.toString() : null);
                             return r;
                         })
                         .collect(Collectors.toList());
@@ -294,6 +284,4 @@ public class GooglePlacesService {
         );
     }
 
-        return restaurants;
     }
-}
