@@ -15,8 +15,6 @@ export default function Explore() {
   const { userLocation, setUserLocation, error, loading } = useLocation();
   const {restaurants, setRestaurants} = useRestaurants();
 
-    console.log(userLocation);
-
   const handleSelectRestaurant = (restaurant: Restaurant) => {
     console.log('Selected:', restaurant.name);
     // You can:

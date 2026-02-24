@@ -8,7 +8,7 @@ const CATEGORIES: Category[] = [
   { id: 'all', title: 'All', filter: null },
   { id: 'popular', title: 'Popular', filter: (r) => (r.rating || 0) >= 4.3 },
   { id: 'top-rated', title: 'Top Rated', filter: (r) => (r.rating || 0) >= 4.5 },
-  { id: 'nearby', title: 'Nearby', filter: (r) => (r.distance || 99999) <= 1000 }, // Within 1km
+  { id: 'nearby', title: 'Nearby', filter: (r) => (r.distance || 99999) <= 1000 },
   { id: 'open-now', title: 'Open Now', filter: (r) => r.openNow === true },
 ];
 
@@ -16,15 +16,12 @@ export default function CategoriesSection() {
   const [selectedId, setSelectedId] = useState<string>('all');
   const { restaurants, loading } = useRestaurants();
 
-  // Get selected category
   const selectedCategory = CATEGORIES.find(cat => cat.id === selectedId);
 
-  // Filter restaurants based on selected category
   const filteredRestaurants = selectedCategory?.filter
     ? restaurants.filter(selectedCategory.filter)
     : restaurants;
 
-  // Sort by rating (highest first)
   const sortedRestaurants = [...filteredRestaurants].sort(
     (a, b) => (b.rating || 0) - (a.rating || 0)
   );
@@ -73,9 +70,7 @@ export default function CategoriesSection() {
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyEmoji}>🔍</Text>
           <Text style={styles.emptyText}>No restaurants found</Text>
-          <Text style={styles.emptySubtext}>
-            Try selecting a different category
-          </Text>
+          <Text style={styles.emptySubtext}>Try selecting a different category</Text>
         </View>
       ) : (
         <ScrollView
@@ -85,13 +80,7 @@ export default function CategoriesSection() {
         >
           {sortedRestaurants.slice(0, 10).map((restaurant) => (
             <View key={restaurant.placeId} style={styles.cardWrapper}>
-              <CompactRestaurantCard
-                item={restaurant}
-                onPress={(item) => {
-                  console.log('Selected restaurant:', item.name);
-                  // Navigate to restaurant details or show modal
-                }}
-              />
+              <CompactRestaurantCard item={restaurant} />
             </View>
           ))}
         </ScrollView>

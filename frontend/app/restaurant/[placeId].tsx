@@ -13,35 +13,43 @@ import {
   Linking,
 } from "react-native";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-type OpeningHours = {
-  weekday_text?: string[];
-  open_now?: boolean;
-};
-
 type PlaceDetail = {
-  placeId: string;
-  name: string;
   address: string;
-  website?: string;
+  name: string;
+  openingHours?: string[];
   photoUrls?: string[];
-  openingHours?: OpeningHours;
-  priceLevel?: string;
-  reviews?: string[];
+  placeId: string;
+  reviews?: { text: string; authorName: string; rating: number }[];
+  website?: string;
 };
-
-// ─── API ──────────────────────────────────────────────────────────────────────
 
 const BASE_URL = "http://192.168.56.1:8080";
 
 async function fetchPlaceDetail(placeId: string): Promise<PlaceDetail> {
   const res = await fetch(`${BASE_URL}/api/restaurant/${placeId}`);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
-}
 
-// ─── Component ────────────────────────────────────────────────────────────────
+  const data = await res.json();
+
+  const place: PlaceDetail = {
+    placeId: data.placeId ?? placeId,
+    name: data.name ?? "",
+    address: data.address ?? "",
+    openingHours: Array.isArray(data.openingHours) ? data.openingHours : undefined,
+    photoUrls: Array.isArray(data.photos) ? data.photos : undefined,
+    reviews: Array.isArray(data.reviews)
+      ? data.reviews.map((r: any) => ({
+          text: r.text ?? "",
+          authorName: r.authorName ?? "",
+          rating: r.rating ?? 0,
+        }))
+      : undefined,
+    website: data.website ?? undefined,
+  };
+
+
+  return place;
+}
 
 export default function RestaurantDetailScreen() {
   const { placeId } = useLocalSearchParams<{ placeId: string }>();
@@ -62,7 +70,6 @@ export default function RestaurantDetailScreen() {
       .finally(() => setLoading(false));
   }, [placeId]);
 
-  // ── Loading ──────────────────────────────────────────────────────────────
   if (loading) {
     return (
       <View style={styles.center}>
@@ -72,7 +79,6 @@ export default function RestaurantDetailScreen() {
     );
   }
 
-  // ── Error ────────────────────────────────────────────────────────────────
   if (error || !place) {
     return (
       <View style={styles.center}>
@@ -85,7 +91,6 @@ export default function RestaurantDetailScreen() {
     );
   }
 
-  // ── Success ──────────────────────────────────────────────────────────────
   const photos = place.photoUrls ?? [];
 
   return (
@@ -99,7 +104,10 @@ export default function RestaurantDetailScreen() {
       {/* Photo carousel */}
       {photos.length > 0 && (
         <View style={styles.photoWrap}>
-          <Image source={{ uri: photos[activePhoto] }} style={styles.heroPic} />
+          <Image
+            source={{ uri: photos[activePhoto] }}
+            style={styles.heroPic}
+          />
           {photos.length > 1 && (
             <View style={styles.dots}>
               {photos.map((_, i) => (
@@ -112,14 +120,9 @@ export default function RestaurantDetailScreen() {
         </View>
       )}
 
-      {/* Name + price */}
+      {/* Name */}
       <View style={styles.header}>
-        <View style={styles.titleRow}>
-          <Text style={styles.name}>{place.name}</Text>
-          {place.priceLevel && (
-            <Text style={styles.priceTag}>{place.priceLevel}</Text>
-          )}
-        </View>
+        <Text style={styles.name}>{place.name}</Text>
       </View>
 
       <View style={styles.divider} />
@@ -131,25 +134,12 @@ export default function RestaurantDetailScreen() {
       </View>
 
       {/* Opening Hours */}
-      {place.openingHours && (
+      {place.openingHours && place.openingHours.length > 0 && (
         <View style={styles.section}>
-          <TouchableOpacity
-            style={styles.hoursHeader}
-            onPress={() => setHoursExpanded((v) => !v)}
-          >
-            <Text style={styles.sectionLabel}>🕐 Hours</Text>
-            <View style={[styles.statusBadge, place.openingHours.open_now ? styles.openBadge : styles.closedBadge]}>
-              <Text style={styles.statusText}>
-                {place.openingHours.open_now ? "Open now" : "Closed"}
-              </Text>
-            </View>
-            <Text style={styles.chevron}>{hoursExpanded ? "▲" : "▼"}</Text>
-          </TouchableOpacity>
-
-          {hoursExpanded &&
-            place.openingHours.weekday_text?.map((line, i) => (
-              <Text key={i} style={styles.hoursLine}>{line}</Text>
-            ))}
+          <Text style={styles.sectionLabel}>🕐 Hours</Text>
+          {place.openingHours.map((line, i) => (
+            <Text key={i} style={styles.hoursLine}>{line}</Text>
+          ))}
         </View>
       )}
 
@@ -183,8 +173,6 @@ export default function RestaurantDetailScreen() {
     </ScrollView>
   );
 }
-
-// ─── Styles ───────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: "#faf9f6" },
@@ -223,9 +211,7 @@ const styles = StyleSheet.create({
   dotActive: { backgroundColor: "#fff", width: 20 },
 
   header: { padding: 20, paddingBottom: 8 },
-  titleRow: { flexDirection: "row", alignItems: "center", gap: 10 },
-  name: { flex: 1, fontSize: 26, fontWeight: "800", color: "#1a1a1a", fontFamily: "Georgia", lineHeight: 32 },
-  priceTag: { fontSize: 14, fontWeight: "700", color: "#888", backgroundColor: "#f0ede8", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8 },
+  name: { fontSize: 26, fontWeight: "800", color: "#1a1a1a", fontFamily: "Georgia", lineHeight: 32 },
 
   divider: { height: 1, backgroundColor: "#e8e4de", marginHorizontal: 20, marginVertical: 8 },
 
@@ -235,13 +221,11 @@ const styles = StyleSheet.create({
   link: { color: "#c0392b", textDecorationLine: "underline" },
 
   hoursHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
-  statusBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 },
-  openBadge: { backgroundColor: "#d4edda" },
-  closedBadge: { backgroundColor: "#f8d7da" },
-  statusText: { fontSize: 12, fontWeight: "700" },
   chevron: { marginLeft: "auto", color: "#999", fontSize: 11 },
   hoursLine: { fontSize: 13, color: "#555", lineHeight: 22 },
 
   reviewCard: { backgroundColor: "#fff", borderRadius: 12, padding: 14, borderWidth: 1, borderColor: "#e8e4de", marginTop: 8 },
   reviewText: { fontSize: 14, color: "#444", lineHeight: 22 },
+  reviewAuthor: { fontSize: 12, color: "#888", marginTop: 6 },
+  reviewRating: { fontSize: 12, color: "#f39c12", marginTop: 2 },
 });

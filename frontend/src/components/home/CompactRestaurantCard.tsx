@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useRestaurants } from '@/src/context/RestaurantContext';
+import {useRouter} from 'expo-router';
+
 
 export type Restaurant = {
   placeId: string;
@@ -39,10 +41,15 @@ export default function CompactRestaurantCard({ item, onPress }: Props) {
     return `${(meters / 1000).toFixed(1)}km`;
   };
 
+  const router = useRouter();
+   const handlePress = () => {
+      router.push(`/restaurant/${item.id}`);
+   };
+
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => onPress?.(item)}
+      onPress={handlePress}
       activeOpacity={0.8}
     >
       {/* Image */}
