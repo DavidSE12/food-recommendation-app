@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {useRouter} from 'expo-router';
+import {useRouter} from "expo-router";
 
 export type Restaurant = {
   id: string;
@@ -30,13 +30,14 @@ type Props = {
 
 export default function RestaurantCard({ item, onPress }: Props) {
   const [isSaved, setIsSaved] = useState(false);
-  const router =   useRouter();
+  const router = useRouter();
 
   const handlePress = () => {
         if (onPress){
             onPress(item)
         }
-    router.push(`/restaurant/${item.id}`);
+//     router.push(`/restaurant/${item.id}`);
+    console.log("Hii");
   };
 
   // Format distance

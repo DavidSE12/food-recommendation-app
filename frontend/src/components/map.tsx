@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import Restaurant from "@src/components/explore/RestaurantCard";
+
 
 
 type Props = {
@@ -13,14 +13,11 @@ type Props = {
     latitude: number;
     longitude: number;
   }) => void;
-
-  restaurants: Restaurant[];
 };
 
 export default function Map({
   userLocation,
-  setUserLocation,
-  restaurants,
+  setUserLocation
 }: Props) {
   return (
     <View style={styles.container}>

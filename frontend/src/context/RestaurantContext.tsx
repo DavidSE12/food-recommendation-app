@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { useLocation } from './LocationContext';
 
 
-export type Restaurant = {
+ type Restaurant = {
   id: string;
   name: string;
   address?: string;

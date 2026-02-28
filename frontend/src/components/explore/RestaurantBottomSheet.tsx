@@ -2,7 +2,21 @@
 import React, { useMemo, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import RestaurantCard, { Restaurant } from './RestaurantCard';
+import RestaurantCard from './RestaurantCard';
+
+type Restaurant = {
+  id: string;
+  name: string;
+  address?: string;
+  rating?: number;
+  totalRating: number;
+  priceLevel?: string;
+  lat: number;
+  lng: number;
+  openNow?: boolean;
+  photoRef?: string;
+  photoUrl?: string;
+};
 
 type Props = {
   restaurants: Restaurant[];
@@ -48,7 +62,7 @@ export default function RestaurantBottomSheet({
         renderItem={({ item }) => (
           <RestaurantCard
             item={item}
-            onPress={onSelect}
+            onPress={(r) => onSelect?.(r)}
           />
         )}
         contentContainerStyle={styles.listContent}

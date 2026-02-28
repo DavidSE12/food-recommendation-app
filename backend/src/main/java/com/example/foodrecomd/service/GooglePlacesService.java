@@ -59,8 +59,13 @@ public class GooglePlacesService {
                 new LatLng(lat, lng))
                 .radius(radiusMeter)
                 .type(PlaceType.RESTAURANT)
-                .awaitIgnoreError();
-
+                .await();
+            if (response == null) {
+                throw new RuntimeException(
+                        "Google Places API returned null response. Possible causes: " +
+                                "invalid API key, quota exceeded, request denied, or network issue."
+                );
+            }
             // Filter result
             Arrays.sort( response.results , (r1, r2) -> {
                 double score1 = caculateScore(r1, lat, lng);
