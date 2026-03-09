@@ -75,7 +75,7 @@ FoodRecomdApp/
 
 ### 1️⃣ Clone Repository
 ```
-git clone https://github.com/YOUR_USERNAME/food-recommendation-app.git
+git clone https://github.com/DavidSE12/food-recommendation-app.git
 cd FoodRecomdApp
 ```
 ### 2️⃣ Backend Setup
