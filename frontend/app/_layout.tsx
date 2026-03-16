@@ -27,6 +27,7 @@ function NavigationGate() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="onboarding" options={{ animation: 'fade' }} />
+      <Stack.Screen name="restaurant/[placeId]" options={{ animation: 'slide_from_right' }} />
     </Stack>
   );
 }

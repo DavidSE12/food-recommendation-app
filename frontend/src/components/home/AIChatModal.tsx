@@ -10,8 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { OPENROUTER_API_KEY, OPENROUTER_MODELS, FOOD_ASSISTANT_SYSTEM_PROMPT } from '@/src/config/ai';
 import { useUser } from '@/src/context/UserContext';
 

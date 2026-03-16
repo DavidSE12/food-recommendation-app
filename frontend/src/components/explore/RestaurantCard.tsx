@@ -36,6 +36,7 @@ export default function RestaurantCard({ item, onPress }: Props) {
 
   const handlePress = () => {
     if (onPress) onPress(item);
+    router.push(`/restaurant/${item.id}`);
   };
 
   const formatDistance = (meters?: number) => {

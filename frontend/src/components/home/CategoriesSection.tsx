@@ -83,7 +83,7 @@ export default function CategoriesSection() {
           contentContainerStyle={styles.restaurantList}
         >
           {sortedRestaurants.slice(0, 10).map((restaurant) => (
-            <View key={restaurant.placeId} style={styles.cardWrapper}>
+            <View key={restaurant.id} style={styles.cardWrapper}>
               <CompactRestaurantCard item={restaurant} />
             </View>
           ))}
