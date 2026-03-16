@@ -37,21 +37,26 @@ export default function ProfileSection({ title, items }: Props) {
 }
 
 const styles = StyleSheet.create({
-  wrapper: { marginTop: 18 },
+  wrapper: { marginTop: 20 },
   sectionTitle: {
-    marginBottom: 8,
-    marginLeft: 6,
+    marginBottom: 10,
+    marginLeft: 4,
     fontSize: 13,
     fontWeight: "700",
-    color: "#444",
+    color: "#FF6B35",
     textTransform: "uppercase",
-    letterSpacing: 0.6,
+    letterSpacing: 0.8,
   },
   card: {
     backgroundColor: "#fff",
-    borderRadius: 14,
+    borderRadius: 18,
     overflow: "hidden",
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: "#E7E7E7",
+    borderWidth: 1,
+    borderColor: "#F5EDE8",
+    shadowColor: "#FF6B35",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 2,
   },
 });

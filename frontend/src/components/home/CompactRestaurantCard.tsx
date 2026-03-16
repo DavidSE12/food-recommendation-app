@@ -5,7 +5,7 @@ import {useRouter} from 'expo-router';
 
 
 export type Restaurant = {
-  placeId: string;
+  id: string;
   name: string;
   rating?: number;
   address?: string;
@@ -24,12 +24,12 @@ type Props = {
 
 export default function CompactRestaurantCard({ item, onPress }: Props) {
   const { isFavorite, addToFavorites, removeFromFavorites } = useRestaurants();
-  const favorited = isFavorite(item.placeId);
+  const favorited = isFavorite(item.id);
 
   const handleSaveToggle = (e: any) => {
-    e.stopPropagation(); // Prevent card press
+    e.stopPropagation();
     if (favorited) {
-      removeFromFavorites(item.placeId);
+      removeFromFavorites(item.id);
     } else {
       addToFavorites(item);
     }
@@ -42,9 +42,9 @@ export default function CompactRestaurantCard({ item, onPress }: Props) {
   };
 
   const router = useRouter();
-   const handlePress = () => {
-      router.push(`/restaurant/${item.id}`);
-   };
+  const handlePress = () => {
+    router.push(`/restaurant/${item.id}`);
+  };
 
   return (
     <TouchableOpacity

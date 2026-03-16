@@ -53,7 +53,7 @@ export default function Profile() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#FFF", // ✅ pure white everywhere
+    backgroundColor: "#F8F5F3",
   },
   content: {
     paddingHorizontal: 16,

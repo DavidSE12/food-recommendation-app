@@ -1,5 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { useRestaurants } from "@/src/context/RestaurantContext";
+import { useUser } from "@/src/context/UserContext";
 
 type Props = {
   name: string;
@@ -10,14 +12,44 @@ type Props = {
 export default function ProfileHeader({ name, subtitle, avatarUri }: Props) {
   const fallback =
     "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&h=200&fit=crop";
+  const { favorites, restaurants } = useRestaurants();
+  const { userProfile } = useUser();
+
+  const displayName = userProfile?.name || name;
+  const displaySub = userProfile
+    ? `${userProfile.age ? `Age ${userProfile.age}` : ''}${userProfile.weight ? ` · ${userProfile.weight}kg` : ''} · ${userProfile.budget || 'Casual'}`
+    : subtitle;
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: avatarUri || fallback }} style={styles.avatar} />
+      {/* Warm background card */}
+      <View style={styles.card}>
+        {/* Avatar */}
+        <View style={styles.avatarRing}>
+          <Image source={{ uri: avatarUri || fallback }} style={styles.avatar} />
+        </View>
 
-      <View style={{ flex: 1 }}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.subtitle}>{subtitle}</Text>
+        {/* Name & subtitle */}
+        <Text style={styles.name}>{displayName}</Text>
+        <Text style={styles.subtitle}>{displaySub}</Text>
+
+        {/* Stats row */}
+        <View style={styles.statsRow}>
+          <View style={styles.stat}>
+            <Text style={styles.statValue}>{restaurants.length}</Text>
+            <Text style={styles.statLabel}>Nearby</Text>
+          </View>
+          <View style={styles.divider} />
+          <View style={styles.stat}>
+            <Text style={styles.statValue}>{favorites.length}</Text>
+            <Text style={styles.statLabel}>Saved</Text>
+          </View>
+          <View style={styles.divider} />
+          <View style={styles.stat}>
+            <Text style={styles.statValue}>0</Text>
+            <Text style={styles.statLabel}>Reviews</Text>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -25,16 +57,76 @@ export default function ProfileHeader({ name, subtitle, avatarUri }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    borderRadius: 16,
-    backgroundColor: "#FFF",
+    paddingHorizontal: 0,
+    paddingTop: 8,
+  },
+  card: {
+    backgroundColor: "#FFF3EE",
+    borderRadius: 24,
+    paddingVertical: 28,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#FFE0D0",
+  },
+  avatarRing: {
+    width: 84,
+    height: 84,
+    borderRadius: 42,
+    padding: 3,
+    backgroundColor: "#FF6B35",
+    marginBottom: 12,
+  },
+  avatar: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 39,
+    backgroundColor: "#eee",
+  },
+  name: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#1A1A1A",
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 13,
+    color: "#888",
+    marginBottom: 20,
+  },
+  statsRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 14,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: "#E7E7E7",
+    backgroundColor: "#FFF",
+    borderRadius: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    width: "100%",
+    justifyContent: "space-around",
+    shadowColor: "#FF6B35",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 2,
   },
-  avatar: { width: 64, height: 64, borderRadius: 32, backgroundColor: "#eee" },
-  name: { fontSize: 18, fontWeight: "800", color: "#111" },
-  subtitle: { marginTop: 4, fontSize: 13, color: "#666" },
+  stat: {
+    alignItems: "center",
+    flex: 1,
+  },
+  statValue: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#FF6B35",
+  },
+  statLabel: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 2,
+    fontWeight: "500",
+  },
+  divider: {
+    width: 1,
+    height: 32,
+    backgroundColor: "#F0F0F0",
+  },
 });

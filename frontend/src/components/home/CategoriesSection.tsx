@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import CategoryChip, { Category } from '@/src/components/home/CategoryChip';
 import CompactRestaurantCard from '@/src/components/home/CompactRestaurantCard';
 import { useRestaurants } from '@/src/context/RestaurantContext';
@@ -15,6 +16,7 @@ const CATEGORIES: Category[] = [
 export default function CategoriesSection() {
   const [selectedId, setSelectedId] = useState<string>('all');
   const { restaurants, loading } = useRestaurants();
+  const router = useRouter();
 
   const selectedCategory = CATEGORIES.find(cat => cat.id === selectedId);
 
@@ -31,7 +33,9 @@ export default function CategoriesSection() {
       {/* Categories Header */}
       <View style={styles.row}>
         <Text style={styles.sectionTitle}>Categories</Text>
-        <Text style={styles.seeAll}>See All</Text>
+        <TouchableOpacity onPress={() => router.push('/(tabs)/explore')}>
+          <Text style={styles.seeAll}>See All</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Category Chips */}

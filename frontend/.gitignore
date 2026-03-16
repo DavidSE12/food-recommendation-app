@@ -42,3 +42,7 @@ app-example
 /ios
 /android
 
+
+# API KEY
+.env
+config/ai.ts
