@@ -2,7 +2,7 @@
 // Get your free API key at https://openrouter.ai
 export const OPENROUTER_API_KEY = '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';
 // Fallback list — tried in order if the previous one fails
-export const OPENROUTER_MODELS = 'nvidia/nemotron-3-super-120b-a12b:free'
+export const OPENROUTER_MODELS = 'openrouter/hunter-alpha'
 
 export const FOOD_ASSISTANT_SYSTEM_PROMPT = `You are a friendly AI food assistant for a food recommendation app. You help users:
 - Discover restaurants and food near them
