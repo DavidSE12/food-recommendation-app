@@ -10,10 +10,6 @@ const app = () => {
             <HomeScreen />
             
         </View>
-
-//         <View>
-//         <Text>Check</Text>
-//         </View>
     )
 }
 

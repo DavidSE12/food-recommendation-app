@@ -10,6 +10,7 @@ export default function HomeHeader() {
         <View>
           <Text style={styles.greeting}>Hello, dat</Text>
           <Text style={styles.title}>What to eat today?</Text>
+          
         </View>
 
         {/* Right side */}

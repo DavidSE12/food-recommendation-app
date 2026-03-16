@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {useRouter} from "expo-router";
+import { useRouter } from "expo-router";
+import { useRestaurants } from '@/src/context/RestaurantContext';
 
 export type Restaurant = {
   id: string;
@@ -29,30 +30,28 @@ type Props = {
 };
 
 export default function RestaurantCard({ item, onPress }: Props) {
-  const [isSaved, setIsSaved] = useState(false);
   const router = useRouter();
+  const { isFavorite, addToFavorites, removeFromFavorites } = useRestaurants();
+  const favorited = isFavorite(item.id);
 
   const handlePress = () => {
-        if (onPress){
-            onPress(item)
-        }
-//     router.push(`/restaurant/${item.id}`);
-    console.log("Hii");
+    if (onPress) onPress(item);
+    router.push(`/restaurant/${item.id}`);
   };
 
-  // Format distance
   const formatDistance = (meters?: number) => {
     if (!meters) return 'N/A';
-    if (meters < 1000) {
-      return `${Math.round(meters)}m`;
-    }
+    if (meters < 1000) return `${Math.round(meters)}m`;
     return `${(meters / 1000).toFixed(1)}km`;
   };
 
-  // Handle save button
-  const handleSave = () => {
-    setIsSaved(!isSaved);
-    console.log(`Restaurant ${item.name} ${!isSaved ? 'saved' : 'unsaved'}`);
+  const handleSave = (e: any) => {
+    e.stopPropagation();
+    if (favorited) {
+      removeFromFavorites(item.id);
+    } else {
+      addToFavorites(item);
+    }
   };
 
   return (
@@ -79,7 +78,7 @@ export default function RestaurantCard({ item, onPress }: Props) {
         onPress={handleSave}
         activeOpacity={0.7}
       >
-        <Text style={styles.saveIcon}>{isSaved ? '❤️' : '🤍'}</Text>
+        <Text style={styles.saveIcon}>{favorited ? '❤️' : '🤍'}</Text>
       </TouchableOpacity>
 
       {/* Restaurant Info */}

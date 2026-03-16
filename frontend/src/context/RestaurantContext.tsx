@@ -46,7 +46,7 @@ export function RestaurantProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const res = await fetch('http://192.168.56.1:8080/api/nearby', {
+      const res = await fetch('http://192.168.1.116:8080/api/nearby', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -92,7 +92,7 @@ export function RestaurantProvider({ children }: { children: ReactNode }) {
       // TODO: Replace with your actual user ID
       const userId = 'user_123';
 
-      const res = await fetch(`http://192.168.56.1:8080/api/favorites/${userId}`);
+      const res = await fetch(`http://192.168.1.116:8080/api/favorites/${userId}`);
       if (!res.ok) throw new Error('Failed to fetch favorites');
 
       const data = await res.json();
@@ -102,53 +102,22 @@ export function RestaurantProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Add to favorites
+  // Add to favorites (local state only)
   const addToFavorites = async (restaurant: Restaurant) => {
-    try {
-      const userId = 'user_123';
-
-      const res = await fetch('http://192.168.56.1:8080/api/favorites', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          placeId: restaurant.placeId,
-          restaurant,
-        }),
-      });
-
-      if (!res.ok) throw new Error('Failed to add favorite');
-
-      // Update local state immediately (optimistic update)
-      setFavorites(prev => [...prev, restaurant]);
-    } catch (e: any) {
-      console.error('Add favorite error:', e);
-      alert('Failed to add to favorites');
-    }
+    setFavorites(prev => {
+      if (prev.some(r => r.id === restaurant.id)) return prev;
+      return [...prev, restaurant];
+    });
   };
 
-  // Remove from favorites
+  // Remove from favorites (local state only)
   const removeFromFavorites = async (placeId: string) => {
-    try {
-      const userId = 'user_123';
-
-      const res = await fetch(`http://192.168.56.1:8080/api/favorites/${userId}/${placeId}`, {
-        method: 'DELETE',
-      });
-
-      if (!res.ok) throw new Error('Failed to remove favorite');
-
-      // Update local state immediately
-      setFavorites(prev => prev.filter(r => r.placeId !== placeId));
-    } catch (e: any) {
-      console.error('Remove favorite error:', e);
-      alert('Failed to remove from favorites');
-    }
+    setFavorites(prev => prev.filter(r => r.id !== placeId));
   };
 
   // Check if restaurant is favorited
   const isFavorite = (placeId: string) => {
-    return favorites.some(r => r.placeId === placeId);
+    return favorites.some(r => r.id === placeId);
   };
 
   // Auto-fetch when location changes
