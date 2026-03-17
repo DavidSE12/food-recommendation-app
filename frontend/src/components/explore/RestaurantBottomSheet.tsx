@@ -27,7 +27,7 @@ type Props = {
 export default function RestaurantBottomSheet({
   restaurants,
   onSelect,
-  initialIndex = 1, // Start at 50% (middle snap point)
+  initialIndex = 0, // Start at 50% (middle snap point)
 }: Props) {
   // Ref
   const bottomSheetRef = useRef<BottomSheet>(null);

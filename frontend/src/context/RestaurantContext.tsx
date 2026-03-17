@@ -39,6 +39,8 @@ export function RestaurantProvider({ children }: { children: ReactNode }) {
 
   // Fetch restaurants from API
 
+  const API_BASE = "http://192.168.1.112:8080"
+
   const fetchRestaurants = async () => {
     if (!userLocation) return;
 
@@ -46,7 +48,7 @@ export function RestaurantProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const res = await fetch('http://192.168.1.116:8080/api/nearby', {
+      const res = await fetch('http://192.168.1.112:8080/api/nearby', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

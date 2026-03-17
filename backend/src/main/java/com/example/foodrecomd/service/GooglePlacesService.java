@@ -180,6 +180,24 @@ public class GooglePlacesService {
         return restaurants;
     }
 
+    public List<RestaurantDTO> searchByText(String query, double lat, double lng) {
+        try {
+            PlacesSearchResponse response = PlacesApi.textSearchQuery(context, query)
+                    .location(new LatLng(lat, lng))
+                    .radius(50000)
+                    .type(PlaceType.RESTAURANT)
+                    .await();
+
+            if (response == null) {
+                throw new RuntimeException("Google Places API returned null response");
+            }
+
+            return convertToRestaurantDTOs(response.results);
+        } catch (Exception e) {
+            throw new RuntimeException("Error searching restaurants: ", e);
+        }
+    }
+
     /**
      * Get detailed information about a restaurant by Place ID
      * Uses NEW Place Details API with field selection for cost optimization

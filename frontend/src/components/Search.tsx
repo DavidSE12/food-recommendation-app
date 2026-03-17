@@ -57,8 +57,8 @@ const SearchBar = ({ onSearch }:SearchBarProps ) => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginBottom : 15,
+    paddingVertical: 6,
+    marginBottom: 4,
   },
   searchContainer: {
     flexDirection: 'row',

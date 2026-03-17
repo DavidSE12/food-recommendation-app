@@ -95,14 +95,14 @@ export default function CategoriesSection() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
+    paddingVertical: 4,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 6,
   },
   sectionTitle: {
     fontSize: 20,
@@ -116,15 +116,15 @@ const styles = StyleSheet.create({
   },
   chipList: {
     paddingHorizontal: 16,
-    paddingBottom: 8,
+    paddingBottom: 4,
   },
   restaurantsHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingTop: 20,
-    paddingBottom: 12,
+    paddingTop: 10,
+    paddingBottom: 8,
   },
   restaurantsTitle: {
     fontSize: 18,
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   },
   restaurantList: {
     paddingLeft: 16,
-    paddingBottom: 20,
+    paddingBottom: 8,
   },
   cardWrapper: {
     width: 260,

@@ -1,17 +1,14 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useRestaurants } from "@/src/context/RestaurantContext";
 import { useUser } from "@/src/context/UserContext";
 
 type Props = {
   name: string;
   subtitle: string;
-  avatarUri?: string;
 };
 
-export default function ProfileHeader({ name, subtitle, avatarUri }: Props) {
-  const fallback =
-    "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&h=200&fit=crop";
+export default function ProfileHeader({ name, subtitle }: Props) {
   const { favorites, restaurants } = useRestaurants();
   const { userProfile } = useUser();
 
@@ -24,11 +21,6 @@ export default function ProfileHeader({ name, subtitle, avatarUri }: Props) {
     <View style={styles.container}>
       {/* Warm background card */}
       <View style={styles.card}>
-        {/* Avatar */}
-        <View style={styles.avatarRing}>
-          <Image source={{ uri: avatarUri || fallback }} style={styles.avatar} />
-        </View>
-
         {/* Name & subtitle */}
         <Text style={styles.name}>{displayName}</Text>
         <Text style={styles.subtitle}>{displaySub}</Text>
@@ -68,20 +60,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#FFE0D0",
-  },
-  avatarRing: {
-    width: 84,
-    height: 84,
-    borderRadius: 42,
-    padding: 3,
-    backgroundColor: "#FF6B35",
-    marginBottom: 12,
-  },
-  avatar: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 39,
-    backgroundColor: "#eee",
   },
   name: {
     fontSize: 20,

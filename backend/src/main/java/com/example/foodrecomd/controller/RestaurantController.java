@@ -61,6 +61,23 @@ public class RestaurantController {
     }
 
     
+    @GetMapping("/search")
+    public ResponseEntity<?> searchRestaurants(
+            @RequestParam String query,
+            @RequestParam double lat,
+            @RequestParam double lng) {
+        try {
+            if (query == null || query.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Query is required");
+            }
+            List<RestaurantDTO> results = googlePlacesService.searchByText(query.trim(), lat, lng);
+            return ResponseEntity.ok(results);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Search failed: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/test")
     public String test() {
         return "Food Recommendation API is working!";

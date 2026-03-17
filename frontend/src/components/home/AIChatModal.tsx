@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   Modal,
   FlatList,
   StyleSheet,
-  KeyboardAvoidingView,
+  Keyboard,
   Platform,
   ActivityIndicator,
 } from 'react-native';
@@ -33,7 +33,29 @@ export default function AIChatModal() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
   const flatListRef = useRef<FlatList>(null);
+
+  // Manual keyboard listeners — reliable inside Modal on both platforms
+  useEffect(() => {
+    if (!visible) return;
+
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const onShow = Keyboard.addListener(showEvent, e => {
+      setKeyboardOffset(e.endCoordinates.height);
+      setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 80);
+    });
+    const onHide = Keyboard.addListener(hideEvent, () => {
+      setKeyboardOffset(0);
+    });
+
+    return () => {
+      onShow.remove();
+      onHide.remove();
+    };
+  }, [visible]);
 
   const sendMessage = useCallback(async () => {
     const text = input.trim();
@@ -80,7 +102,7 @@ export default function AIChatModal() {
                 },
                 ...history,
               ],
-              max_tokens: 400,
+              max_tokens: 200,
               temperature: 0.7,
             }),
           });
@@ -151,47 +173,55 @@ export default function AIChatModal() {
       </TouchableOpacity>
 
       {/* Chat Modal */}
-      <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={() => setVisible(false)}>
+      <Modal
+        visible={visible}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setVisible(false)}
+      >
         <SafeAreaView style={styles.modalContainer}>
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.headerLeft}>
-              <Text style={styles.headerEmoji}>🤖</Text>
-              <View>
-                <Text style={styles.headerTitle}>AI Food Assistant</Text>
-                <Text style={styles.headerSub}>Ask me anything about food</Text>
+          {/* Keyboard offset pushes everything up */}
+          <View style={[styles.inner, { paddingBottom: keyboardOffset }]}>
+            {/* Header */}
+            <View style={styles.header}>
+              <View style={styles.headerLeft}>
+                <Text style={styles.headerEmoji}>🤖</Text>
+                <View>
+                  <Text style={styles.headerTitle}>AI Food Assistant</Text>
+                  <Text style={styles.headerSub}>Ask me anything about food</Text>
+                </View>
               </View>
+              <TouchableOpacity onPress={() => setVisible(false)} style={styles.closeBtn}>
+                <Text style={styles.closeText}>✕</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => setVisible(false)} style={styles.closeBtn}>
-              <Text style={styles.closeText}>✕</Text>
-            </TouchableOpacity>
-          </View>
 
-          {/* Messages */}
-          <FlatList
-            ref={flatListRef}
-            data={messages}
-            keyExtractor={item => item.id}
-            renderItem={renderMessage}
-            contentContainerStyle={styles.messageList}
-            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
-            showsVerticalScrollIndicator={false}
-          />
+            {/* Messages */}
+            <FlatList
+              ref={flatListRef}
+              data={messages}
+              keyExtractor={item => item.id}
+              renderItem={renderMessage}
+              contentContainerStyle={styles.messageList}
+              onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+              showsVerticalScrollIndicator={false}
+              style={styles.messagesFlex}
+              keyboardShouldPersistTaps="handled"
+            />
 
-          {/* Typing indicator */}
-          {loading && (
-            <View style={styles.typingRow}>
-              <View style={styles.avatar}>
-                <Text style={styles.avatarText}>🤖</Text>
+            {/* Typing indicator */}
+            {loading && (
+              <View style={styles.typingRow}>
+                <View style={styles.avatar}>
+                  <Text style={styles.avatarText}>🤖</Text>
+                </View>
+                <View style={[styles.bubble, styles.assistantBubble, styles.typingBubble]}>
+                  <ActivityIndicator size="small" color="#FF6B35" />
+                </View>
               </View>
-              <View style={[styles.bubble, styles.assistantBubble, styles.typingBubble]}>
-                <ActivityIndicator size="small" color="#FF6B35" />
-              </View>
-            </View>
-          )}
+            )}
 
-          {/* Input */}
-          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+            {/* Input */}
             <View style={styles.inputRow}>
               <TextInput
                 style={styles.input}
@@ -211,7 +241,7 @@ export default function AIChatModal() {
                 <Text style={styles.sendIcon}>➤</Text>
               </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
+          </View>
         </SafeAreaView>
       </Modal>
     </>
@@ -241,6 +271,9 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: '#F8F9FA',
+  },
+  inner: {
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
@@ -282,6 +315,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#555',
     fontWeight: '600',
+  },
+  messagesFlex: {
+    flex: 1,
   },
   messageList: {
     padding: 16,

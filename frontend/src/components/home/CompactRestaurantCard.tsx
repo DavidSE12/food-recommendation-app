@@ -43,7 +43,11 @@ export default function CompactRestaurantCard({ item, onPress }: Props) {
 
   const router = useRouter();
   const handlePress = () => {
-    router.push(`/restaurant/${item.id}`);
+    if (onPress) {
+      onPress(item);
+    } else {
+      router.push(`/restaurant/${item.id}`);
+    }
   };
 
   return (

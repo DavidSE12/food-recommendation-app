@@ -23,7 +23,7 @@ type PlaceDetail = {
   website?: string;
 };
 
-const BASE_URL = "http://192.168.1.116:8080";
+const BASE_URL = "http://192.168.1.112:8080";
 
 async function fetchPlaceDetail(placeId: string): Promise<PlaceDetail> {
   const res = await fetch(`${BASE_URL}/api/restaurant/${placeId}`);
