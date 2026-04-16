@@ -11,6 +11,8 @@ public class RestaurantDetails {
     private String address;
     private String website;
     private String priceLevel;
+    private double lat;
+    private double lng;
 
     private List<String> openingHours;
     private List<String> photos;
@@ -55,6 +57,12 @@ public class RestaurantDetails {
     public void setPriceLevel(String priceLevel) {
         this.priceLevel = priceLevel;
     }
+
+    public double getLat() { return lat; }
+    public void setLat(double lat) { this.lat = lat; }
+
+    public double getLng() { return lng; }
+    public void setLng(double lng) { this.lng = lng; }
 
     public List<String> getOpeningHours() {
         return openingHours;

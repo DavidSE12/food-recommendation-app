@@ -212,18 +212,12 @@ public class GooglePlacesService {
             // Specify exactly which fields we need
             // This is CRITICAL for cost control!
             request.fields(
-                    // ESSENTIALS (cheaper tier)
                     PlaceDetailsRequest.FieldMask.FORMATTED_ADDRESS,
-
-                    // PRO (medium cost)
                     PlaceDetailsRequest.FieldMask.NAME,
-
-                    // ENTERPRISE (higher cost) - only if you need them
+                    PlaceDetailsRequest.FieldMask.GEOMETRY,
                     PlaceDetailsRequest.FieldMask.OPENING_HOURS,
                     PlaceDetailsRequest.FieldMask.WEBSITE,
                     PlaceDetailsRequest.FieldMask.PRICE_LEVEL,
-
-                    // ENTERPRISE PLUS (most expensive) - only if you need them
                     PlaceDetailsRequest.FieldMask.REVIEWS,
                     PlaceDetailsRequest.FieldMask.PHOTOS
             );
@@ -234,11 +228,13 @@ public class GooglePlacesService {
             RestaurantDetails details = new RestaurantDetails();
             details.setPlaceId(placeId);
 
-            // NAME (Pro SKU)
             details.setName(placeDetails.name);
-
-            // FORMATTED_ADDRESS (Essentials SKU)
             details.setAddress(placeDetails.formattedAddress);
+
+            if (placeDetails.geometry != null && placeDetails.geometry.location != null) {
+                details.setLat(placeDetails.geometry.location.lat);
+                details.setLng(placeDetails.geometry.location.lng);
+            }
 
             // WEBSITE (Enterprise SKU)
             details.setWebsite(placeDetails.website != null ? placeDetails.website.toString() : null);

@@ -13,7 +13,7 @@ import { useRouter } from 'expo-router';
 import CompactRestaurantCard, { Restaurant } from './CompactRestaurantCard';
 import { useLocation } from '@/src/context/LocationContext';
 
-const API_BASE = 'http://192.168.1.112:8080';
+const API_BASE = process.env.EXPO_PUBLIC_API_BASE ?? 'http://10.16.7.111:8080';
 
 type Props = {
   visible: boolean;

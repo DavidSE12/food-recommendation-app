@@ -10,7 +10,7 @@ export default function HomeHeader({ onSearch }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Text style={styles.greeting}>Hello, dat</Text>
+        <Text style={styles.greeting}>Hello, david</Text>
         <Text style={styles.title}>What to eat today?</Text>
       </View>
 

@@ -77,59 +77,43 @@ export default function AIChatModal() {
         content: m.content,
       }));
 
-      let reply: string | null = null;
-      let lastError = '';
-
-      const modelList = Array.isArray(OPENROUTER_MODELS) ? OPENROUTER_MODELS : [OPENROUTER_MODELS];
-      for (const model of modelList) {
-        try {
-          const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-              'HTTP-Referer': 'https://foodrecomd.app',
-              'X-Title': 'FoodRecomd AI Assistant',
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          'HTTP-Referer': 'https://foodrecomd.app',
+          'X-Title': 'FoodRecomd AI Assistant',
+        },
+        body: JSON.stringify({
+          model: OPENROUTER_MODELS,
+          messages: [
+            {
+              role: 'system',
+              content: userProfile
+                ? `${FOOD_ASSISTANT_SYSTEM_PROMPT}\n\nUser profile: Name: ${userProfile.name}, Age: ${userProfile.age}, Weight: ${userProfile.weight}kg, Dietary: ${userProfile.preferences.join(', ') || 'None'}, Favourite foods: ${userProfile.favoriteFoods.join(', ') || 'None'}, Allergies: ${userProfile.allergies.join(', ') || 'None'}, Budget: ${userProfile.budget}.`
+                : FOOD_ASSISTANT_SYSTEM_PROMPT,
             },
-            body: JSON.stringify({
-              model,
-              messages: [
-                {
-                  role: 'system',
-                  content: userProfile
-                    ? `${FOOD_ASSISTANT_SYSTEM_PROMPT}\n\nUser profile: Name: ${userProfile.name}, Age: ${userProfile.age}, Weight: ${userProfile.weight}kg, Dietary: ${userProfile.preferences.join(', ') || 'None'}, Favourite foods: ${userProfile.favoriteFoods.join(', ') || 'None'}, Allergies: ${userProfile.allergies.join(', ') || 'None'}, Budget: ${userProfile.budget}.`
-                    : FOOD_ASSISTANT_SYSTEM_PROMPT,
-                },
-                ...history,
-              ],
-              max_tokens: 200,
-              temperature: 0.7,
-            }),
-          });
+            ...history,
+          ],
+          max_tokens: 200,
+          temperature: 0.7,
+        }),
+      });
 
-          const data = await res.json();
+      const data = await res.json();
 
-          if (!res.ok || data?.error) {
-            lastError = data?.error?.message || data?.error || `API error ${res.status}`;
-            console.warn(`Model ${model} failed: ${lastError}`);
-            continue;
-          }
-
-          reply = data.choices?.[0]?.message?.content?.trim() || null;
-          if (reply) break;
-        } catch (e: any) {
-          lastError = e?.message || 'unknown error';
-          console.warn(`Model ${model} threw: ${lastError}`);
-        }
+      if (!res.ok || data?.error) {
+        const errMsg = data?.error?.message || data?.error || `API error ${res.status}`;
+        console.warn('AI request failed:', errMsg);
+        throw new Error(errMsg);
       }
+
+      const reply = data.choices?.[0]?.message?.content?.trim() || "Sorry, I couldn't generate a response.";
 
       setMessages(prev => [
         ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: reply || `Sorry, all models are temporarily unavailable. (${lastError})`,
-        },
+        { id: (Date.now() + 1).toString(), role: 'assistant', content: reply },
       ]);
     } catch (e: any) {
       console.error('Chat error:', e?.message);

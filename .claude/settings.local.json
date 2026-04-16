@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ipconfig)",
+      "Bash(curl -s http://localhost:8080/api/test)"
+    ]
+  }
+}

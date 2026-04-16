@@ -20,7 +20,7 @@ type UserContextType = {
 };
 
 const STORAGE_KEY = '@foodrecomd_user_profile';
-const API_BASE = 'http://192.168.1.112:8080';
+const API_BASE = process.env.EXPO_PUBLIC_API_BASE ?? 'http://10.16.7.111:8080';
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 

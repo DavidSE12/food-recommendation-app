@@ -16,6 +16,8 @@ import {
 type PlaceDetail = {
   address: string;
   name: string;
+  lat: number;
+  lng: number;
   openingHours?: string[];
   photoUrls?: string[];
   placeId: string;
@@ -23,7 +25,7 @@ type PlaceDetail = {
   website?: string;
 };
 
-const BASE_URL = "http://192.168.1.112:8080";
+const BASE_URL = process.env.EXPO_PUBLIC_API_BASE ?? "http://10.16.7.111:8080";
 
 async function fetchPlaceDetail(placeId: string): Promise<PlaceDetail> {
   const res = await fetch(`${BASE_URL}/api/restaurant/${placeId}`);
@@ -31,10 +33,12 @@ async function fetchPlaceDetail(placeId: string): Promise<PlaceDetail> {
 
   const data = await res.json();
 
-  const place: PlaceDetail = {
+  return {
     placeId: data.placeId ?? placeId,
     name: data.name ?? "",
     address: data.address ?? "",
+    lat: data.lat ?? 0,
+    lng: data.lng ?? 0,
     openingHours: Array.isArray(data.openingHours) ? data.openingHours : undefined,
     photoUrls: Array.isArray(data.photos) ? data.photos : undefined,
     reviews: Array.isArray(data.reviews)
@@ -46,9 +50,6 @@ async function fetchPlaceDetail(placeId: string): Promise<PlaceDetail> {
       : undefined,
     website: data.website ?? undefined,
   };
-
-
-  return place;
 }
 
 export default function RestaurantDetailScreen() {
@@ -59,7 +60,6 @@ export default function RestaurantDetailScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activePhoto, setActivePhoto] = useState(0);
-  const [hoursExpanded, setHoursExpanded] = useState(false);
 
   useEffect(() => {
     if (!placeId) return;
@@ -104,10 +104,7 @@ export default function RestaurantDetailScreen() {
       {/* Photo carousel */}
       {photos.length > 0 && (
         <View style={styles.photoWrap}>
-          <Image
-            source={{ uri: photos[activePhoto] }}
-            style={styles.heroPic}
-          />
+          <Image source={{ uri: photos[activePhoto] }} style={styles.heroPic} />
           {photos.length > 1 && (
             <View style={styles.dots}>
               {photos.map((_, i) => (
@@ -127,11 +124,23 @@ export default function RestaurantDetailScreen() {
 
       <View style={styles.divider} />
 
+      {/* Open in Google Maps */}
+      <View style={styles.section}>
+        <TouchableOpacity
+          style={styles.mapsBtn}
+          onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}`)}
+        >
+          <Text style={styles.mapsBtnText}> Open in Google Maps</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Address */}
       <View style={styles.section}>
         <Text style={styles.sectionLabel}>📍 Address</Text>
         <Text style={styles.sectionValue}>{place.address}</Text>
       </View>
+
+      
 
       {/* Opening Hours */}
       {place.openingHours && place.openingHours.length > 0 && (
@@ -220,9 +229,10 @@ const styles = StyleSheet.create({
   sectionValue: { fontSize: 15, color: "#333", lineHeight: 22 },
   link: { color: "#c0392b", textDecorationLine: "underline" },
 
-  hoursHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
-  chevron: { marginLeft: "auto", color: "#999", fontSize: 11 },
   hoursLine: { fontSize: 13, color: "#555", lineHeight: 22 },
+
+mapsBtn: { backgroundColor: "#FF6B35", borderRadius: 12, paddingVertical: 14, alignItems: "center" },
+  mapsBtnText: { color: "#fff", fontSize: 15, fontWeight: "700" },
 
   reviewCard: { backgroundColor: "#fff", borderRadius: 12, padding: 14, borderWidth: 1, borderColor: "#e8e4de", marginTop: 8 },
   reviewText: { fontSize: 14, color: "#444", lineHeight: 22 },

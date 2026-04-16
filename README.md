@@ -18,6 +18,18 @@ The app helps users discover the best nearby restaurants based on:
 
 ---
 
+## Screenshots
+
+| Home | Google Map | Search Results |
+|------|-----------|----------------|
+| <img src="frontend/assets/images/homepage.PNG" width="220"/> | <img src="frontend/assets/images/ggmap.PNG" width="220"/> | <img src="frontend/assets/images/searchResult.PNG" width="220"/> |
+
+| Restaurant Detail | AI Chat |
+|-------------------|---------|
+| <img src="frontend/assets/images/restaurantdetail.PNG" width="220"/> | <img src="frontend/assets/images/aichat.PNG" width="220"/> |
+
+---
+
 ## Features
 
 - Real-time GPS location detection
